@@ -1,7 +1,7 @@
 import ScrollSuave from "./modules/scroll-suave.js";
+import Modal from "./modules/modal.js";
 import iniciaAnimacaoScroll from "./modules/scroll-animacao.js";
 import TabNav from "./modules/nav-tab.js";
-import iniciaModal from "./modules/modal.js";
 import iniciaTooltip from "./modules/tooltip.js";
 import iniciaMenuDropDown from "./modules/menu-dropdown.js";
 import iniciaMenuMobile from "./modules/menu-mobile.js";
@@ -22,8 +22,14 @@ const tabNav = new TabNav(
 );
 tabNav.init();
 
+const modal = new Modal(
+  '[data-modal="abrir"]',
+  '[data-modal="fechar"]',
+  '[data-modal="container"]'
+);
+modal.init();
+
 iniciaAnimacaoScroll();
-iniciaModal();
 iniciaTooltip();
 iniciaMenuDropDown();
 iniciaMenuMobile();
