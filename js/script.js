@@ -2,7 +2,7 @@ import ScrollSuave from "./modules/scroll-suave.js";
 import Modal from "./modules/modal.js";
 import iniciaAnimacaoScroll from "./modules/scroll-animacao.js";
 import TabNav from "./modules/nav-tab.js";
-import iniciaTooltip from "./modules/tooltip.js";
+import Tooltip from "./modules/tooltip.js";
 import iniciaMenuDropDown from "./modules/menu-dropdown.js";
 import iniciaMenuMobile from "./modules/menu-mobile.js";
 import iniciaFuncionamento from "./modules/funcionamento.js";
@@ -29,8 +29,10 @@ const modal = new Modal(
 );
 modal.init();
 
+const tooltip = new Tooltip("[data-tooltip]");
+tooltip.init();
+
 iniciaAnimacaoScroll();
-iniciaTooltip();
 iniciaMenuDropDown();
 iniciaMenuMobile();
 iniciaFuncionamento();
