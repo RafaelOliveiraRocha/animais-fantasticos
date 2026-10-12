@@ -22,7 +22,8 @@ ul {
 
 body {
   background: #faf6ed;
-  color: #222 -webkit-font-smoothing antialiased;
+  color: #222;
+  -webkit-font-smoothing: antialiased;
 }
 
 .grid-container {
@@ -43,7 +44,8 @@ body {
   padding: 10px;
 }
 
-.menu ul li a {
+.menu ul li a,
+.menu ul li button {
   display: block;
   padding: 10px;
   margin-right: 10px;
@@ -54,9 +56,14 @@ body {
   text-transform: uppercase;
   font-size: 0.875rem;
   letter-spacing: 0.1em;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
 }
 
-.menu ul li a:hover {
+.menu ul li a:hover,
+.menu ul li button:hover {
   color: white;
 }
 
@@ -114,17 +121,49 @@ body {
   cursor: pointer;
 }
 
+.animais-lista button {
+  display: block;
+  width: 100%;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: pointer;
+}
+
+.animais-lista button[aria-pressed="true"] {
+  box-shadow: inset 5px 0 #e54;
+}
+
+.animais-lista button[aria-pressed="true"] img {
+  border-left: 5px solid #e54;
+  box-sizing: border-box;
+}
+
+:focus-visible {
+  outline: 3px solid #222;
+  outline-offset: 3px;
+}
+
+.animais-lista button:focus-visible {
+  outline-color: #e54;
+  outline-offset: -5px;
+}
+
+[hidden] {
+  display: none !important;
+}
+
 .animais-lista::-webkit-scrollbar {
   width: 18px;
 }
 
-.animais-lista:-webkit-scrollbar-thumb {
+.animais-lista::-webkit-scrollbar-thumb {
   background-color: #fb5;
   border-left: 4px solid #faf6ed;
   border-right: 4px solid #faf6ed;
 }
 
-.animais-lista:-webkit-scrollbar-track {
+.animais-lista::-webkit-scrollbar-track {
   background-color: #faf6ed;
 }
 
@@ -147,6 +186,16 @@ body {
   margin-top: 2rem;
   margin-bottom: 15px;
   color: #e54;
+}
+
+.faq-lista button {
+  font: inherit;
+  color: inherit;
+  padding: 4px 0;
+  border: 0;
+  background: none;
+  text-align: left;
+  cursor: pointer;
 }
 
 .faq-lista dt::before {
@@ -208,12 +257,16 @@ body {
   }
 
   .grid-section {
-    grid-template-columns: 100px 1fr;
+    grid-template-columns: 100px minmax(0, 1fr);
     grid-gap: 10px;
   }
 
   .animais-lista {
     grid-column: 1;
+  }
+
+  .animais-descricao {
+    grid-column: 2;
   }
 
   .faq-lista,
@@ -224,6 +277,7 @@ body {
 
   .grid-section h1 {
     font-size: 3rem;
+    grid-column: 1 / -1;
   }
 
   .menu {
@@ -281,12 +335,12 @@ body {
   display: none;
 }
 
-[data-anime='accordion'] dt::after {
+[data-anime='accordion'] button::after {
   content: "⮧";
   margin-left: 10px;
 }
 
-[data-anime='accordion'] dt.ativo::after {
+[data-anime='accordion'] button[aria-expanded="true"]::after {
   content: "⮥";
 }
 
@@ -337,4 +391,17 @@ body {
   padding: .2rem .5rem;
   font-weight: bold;
   border-radius: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+
+  .js [data-anime='scroll'] {
+    opacity: 1;
+    transform: none;
+  }
 }

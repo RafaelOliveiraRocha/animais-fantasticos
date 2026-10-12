@@ -7,8 +7,10 @@ export default class TabNav {
 
   // ativa a tab de acordo com o index da mesma
   ativarTab(index) {
-    this.tabConteudo.forEach((conteudo) => {
+    this.tabConteudo.forEach((conteudo, itemIndex) => {
       conteudo.classList.remove(this.activeClass);
+      conteudo.hidden = itemIndex !== index;
+      this.tabMenu[itemIndex].setAttribute("aria-pressed", String(itemIndex === index));
     });
     const animacao = this.tabConteudo[index].dataset.anime;
     this.tabConteudo[index].classList.add(this.activeClass, animacao);

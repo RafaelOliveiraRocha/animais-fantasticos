@@ -12,12 +12,15 @@ export default class AnimaNumeros {
   // incrementa a partir de 0 até o número final
   static incrementarNumero(numero) {
     const total = +numero.innerText;
-    const incremento = Math.floor(total / 100);
+    if (!Number.isFinite(total) || total <= 0
+      || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const incremento = Math.max(1, Math.floor(total / 100));
     let start = 0;
     const timer = setInterval(() => {
-      start += incremento;
+      start = window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? total : start + incremento;
       numero.innerText = start;
-      if (start > total) {
+      if (start >= total) {
         numero.innerText = total;
         clearInterval(timer);
       }
@@ -47,7 +50,11 @@ export default class AnimaNumeros {
 
   init() {
     if (this.numeros.length && this.observerTarget) {
-      this.addMutationObserver();
+      if (this.observerTarget.classList.contains(this.observerClass)) {
+        this.animaNumeros();
+      } else {
+        this.addMutationObserver();
+      }
     }
     return this;
   }

@@ -1,43 +1,34 @@
 import AnimaNumeros from "./anima-numeros.js";
 
-export default function fetchAnimais(url, target) {
-  // cria a div contendo informações com o total de animais
-  function criarAnimal(animal) {
-    const div = document.createElement("div");
-    div.classList.add("numero-animal");
-    div.innerHTML = `<h3>${animal.animal}</h3><span data-numero>${animal.total}</span>`;
-    return div;
+export default async function fetchAnimais(url, target) {
+  const grid = document.querySelector(target);
+  const status = document.querySelector(".status-numeros");
+  if (!grid || !status) return;
+  grid.replaceChildren();
+  status.textContent = "Carregando números…";
+  try {
+    const resposta = await fetch(url);
+    if (!resposta.ok) throw new Error("Arquivo indisponível");
+    const animais = await resposta.json();
+    if (!Array.isArray(animais) || animais.some((animal) => (
+      !animal || typeof animal.animal !== "string" || !animal.animal.trim()
+      || !Number.isInteger(animal.total) || animal.total < 0
+    ))) throw new Error("Formato inválido");
+    animais.forEach((animal) => {
+      const div = document.createElement("div");
+      div.classList.add("numero-animal");
+      const titulo = document.createElement("h3");
+      titulo.textContent = animal.animal;
+      const total = document.createElement("span");
+      total.setAttribute("data-numero", "");
+      total.textContent = animal.total;
+      div.append(titulo, total);
+      grid.appendChild(div);
+    });
+    status.textContent = animais.length ? "" : "Nenhum número disponível no arquivo.";
+    new AnimaNumeros("[data-numero]", ".numeros", "ativo").init();
+  } catch (erro) {
+    grid.replaceChildren();
+    status.textContent = "Não foi possível carregar os números. As outras seções continuam disponíveis.";
   }
-
-  // preenche cada animal no DOM
-  const numerosGrid = document.querySelector(target);
-  function preencherAnimais(animal) {
-    const divAnimal = criarAnimal(animal);
-    numerosGrid.appendChild(divAnimal);
-  }
-
-  // anima os números de cada animal
-  function animaAnimaisNumeros() {
-    const animaNumeros = new AnimaNumeros("[data-numero]", ".numeros", "ativo");
-    animaNumeros.init();
-  }
-
-  // puxa os animais através de um arq. json
-  // e cria cada animal utilizando criarAnimal()
-  async function criarAnimais() {
-    try {
-      // fetch e espera a resposta e transforma em json
-      const animaisResponse = await fetch(url);
-      const animaisJson = await animaisResponse.json();
-      // após transformar em json, ativa as funções para preencher e animar os números
-      animaisJson.forEach((animal) => {
-        preencherAnimais(animal);
-      });
-      animaAnimaisNumeros();
-    } catch (erro) {
-      console.log(erro);
-    }
-  }
-
-  return criarAnimais();
 }

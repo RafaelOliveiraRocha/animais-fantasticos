@@ -14,10 +14,18 @@ export default class ScrollSuave {
   }
 
   lidarComItem(event) {
-    event.preventDefault();
     const href = event.currentTarget.getAttribute("href");
     const section = document.querySelector(href);
-    section.scrollIntoView(this.options);
+    if (section) {
+      event.preventDefault();
+      section.scrollIntoView({
+        ...this.options,
+        behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+          ? "auto" : this.options.behavior,
+      });
+      section.setAttribute("tabindex", "-1");
+      section.focus({ preventScroll: true });
+    }
   }
 
   addLinkEvent() {

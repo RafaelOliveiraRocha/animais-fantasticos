@@ -20,7 +20,7 @@ export default class Tooltip {
 
   // remove a tooltip e os eventos de mousemove e mouseleave
   iniciaMouseLeave(event) {
-    this.tooltipBox.remove();
+    if (this.tooltipBox) this.tooltipBox.remove();
     event.currentTarget.removeEventListener(
       "mouseleave",
       this.iniciaMouseLeave
@@ -30,6 +30,7 @@ export default class Tooltip {
 
   // cria a tooltip box e adiciona no body
   criarTooltipsBox(element) {
+    if (this.tooltipBox) this.tooltipBox.remove();
     const tooltipBox = document.createElement("div");
     const text = element.getAttribute("aria-label");
     tooltipBox.classList.add("tooltip");
@@ -49,7 +50,16 @@ export default class Tooltip {
   // adiciona o evento de mouseover a cada tooltip
   addTooltipsEvent() {
     this.tooltips.forEach((item) => {
-      item.addEventListener("mouseover", this.ativaMouseOver);
+      item.addEventListener("mouseenter", this.ativaMouseOver);
+      item.addEventListener("focus", (event) => {
+        this.ativaMouseOver(event);
+        const rect = item.getBoundingClientRect();
+        this.iniciaMouseMove({
+          pageX: rect.left + window.scrollX,
+          pageY: rect.top + window.scrollY,
+        });
+      });
+      item.addEventListener("blur", this.iniciaMouseLeave);
     });
   }
 

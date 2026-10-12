@@ -7,7 +7,6 @@
     display: none;
 }
 
-[data-dropdown]:hover .dropdown-menu,
 [data-dropdown].ativa .dropdown-menu {
     display: block;
     animation: show-up .3s forwards;
@@ -20,7 +19,7 @@
     }
     to{
         opacity: 1;
-        transform: translate3d(0, 0, 0,);
+        transform: translate3d(0, 0, 0);
     }
 }
 

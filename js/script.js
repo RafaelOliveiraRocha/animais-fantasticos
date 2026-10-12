@@ -17,7 +17,7 @@ const accordion = new Accordion('[data-anime="accordion"] dt');
 accordion.init();
 
 const tabNav = new TabNav(
-  '[data-tab="menu"] li',
+  '[data-tab="menu"] button',
   '[data-tab="conteudo"] section'
 );
 tabNav.init();
@@ -39,5 +39,5 @@ iniciaMenuDropDown();
 iniciaMenuMobile();
 iniciaFuncionamento();
 
-fetchAnimais("../../animaisapi.json", ".numeros-grid");
+fetchAnimais("./animaisapi.json", ".numeros-grid");
 fetchBitcoin("https://blockchain.info/ticker", ".btc-preco");
